@@ -1,0 +1,23 @@
+.productList {
+    list-style: none;
+}
+
+.createProductForm {
+    display: flex;
+    flex-direction: column;
+}
+
+.createProductFormBtnContainer {
+    display: flex;
+    justify-content: end;
+    margin-top: 1rem;
+}
+
+.createProductFormBtnContainer button{
+    margin-left: 5px;
+}
+
+.productImg {
+    width: 3.5rem;
+    height: 3.5rem;
+}
