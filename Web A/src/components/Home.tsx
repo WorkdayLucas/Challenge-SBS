@@ -1,31 +1,30 @@
 import React from 'react'
-import { request, gql } from 'graphql-request'
+import { graphQLClient, getProducts } from '../queries/Queries'
 import Products from './Products'
 import { useDispatch } from 'react-redux'
 import { loadProducts } from '../features/slices/productSlice'
+import { socket } from '../features/socketConnection/connection'
+import { Product } from '../types/types'
+
 
 const Home = () => {
 
+  const dispatch = useDispatch()
 
-    const dispatch = useDispatch()
 
-    const query = gql`
-    {
-      products {
-        _id
-        name
-        description
-        price
-        img
-      }
-    }
-    `
-    request('http://localhost:3001/api-products', query).then((data) => dispatch(loadProducts(data)))
+  graphQLClient.request(getProducts).then((data:[Product]) => dispatch(loadProducts(data)))
+
+  socket.on("create product", () => {
+    graphQLClient.request(getProducts).then((data:[Product]) => dispatch(loadProducts(data)))
+  })
+  socket.on("delete product", () => {
+    graphQLClient.request(getProducts).then((data:[Product]) => dispatch(loadProducts(data)))
+  })
 
   return (
     <div>
-        <Products/>
-    </div>  
+      <Products />
+    </div>
   )
 }
 

@@ -1,5 +1,6 @@
 import React from 'react'
-import { request, gql } from 'graphql-request'
+import { graphQLClient, getProducts } from '../queries/Queries'
+import { socket } from '../features/socketConnection/connection'
 import Products from './Products'
 import { useDispatch } from 'react-redux'
 import { loadProducts } from '../features/slices/productSlice'
@@ -8,24 +9,18 @@ import { useProductModal } from './useProductModal';
 import ProductModal from './ProductModal';
 
 import Button from '@mui/material/Button';
+import { Product } from '../types/types'
 
 const Home = () => {
 
   const [isOpenModal, openModal, closeModal] = useProductModal(false)
   const dispatch = useDispatch()
 
-  const query = gql`
-    {
-      products {
-        _id
-        name
-        description
-        price
-        img
-      }
-    }
-    `
-  request('http://localhost:3001/api-products', query).then((data) => dispatch(loadProducts(data)))
+  graphQLClient.request(getProducts).then((data:[Product]) => dispatch(loadProducts(data)))
+
+  socket.on("delete product", () => {
+    graphQLClient.request(getProducts).then((data:[Product]) => dispatch(loadProducts(data)))
+  })
 
   return (
     <div>
