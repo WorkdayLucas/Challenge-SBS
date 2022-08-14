@@ -4,6 +4,7 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 
 import { graphQLClient, createProduct } from '../queries/Queries'
+import { socket } from '../features/socketConnection/connection';
 
 
 const style = {
@@ -23,6 +24,7 @@ interface props {
 }
 
 const CreateProductForm = ({ close }: props) => {
+
 
     const [input, setInput] = useState({
         name: "",
@@ -46,6 +48,7 @@ const CreateProductForm = ({ close }: props) => {
                 img: "",
             })
             close()
+            socket.emit("create product")
         })
     }
 
