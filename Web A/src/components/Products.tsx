@@ -33,7 +33,10 @@ const Products = () => {
                     {product.name}
                   </Typography>
                   <Typography variant="body2">
-                    {product.description}
+                    {`${product.description.substring(0,40)}${product.description.length>40? "..." : ""}`}
+                  </Typography>
+                  <Typography variant="body2">
+                    {`$ ${product.price}`}
                   </Typography>
                 </CardContent>
                 <CardActions>
