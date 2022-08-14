@@ -26,8 +26,9 @@ const Products = () => {
         {
           products.map((product: Product) => {
             return <li>
-              <Card sx={{ maxWidth: 300 }}>
+              <Card sx={{ width: 350, height: 260, margin: 1 }}>
                 <CardContent>
+                  <img className='productImg' src={`${product.img}`}/>
                   <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
                     {product.name}
                   </Typography>
