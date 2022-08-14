@@ -15,10 +15,10 @@ import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 import { graphQLClient, deleteProduct } from '../queries/Queries'
+import { socket } from '../features/socketConnection/connection';
 
 
 import './Products.css'
-import { width } from '@mui/system';
 
 
 
@@ -31,6 +31,7 @@ const Products = () => {
 
   const handleDelete = (id: String) => {
     graphQLClient.request(deleteProduct, { _id: id })
+    socket.emit("delete product")
   }
 
   return (
