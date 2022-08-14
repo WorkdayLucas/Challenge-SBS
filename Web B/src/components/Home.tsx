@@ -18,6 +18,10 @@ const Home = () => {
 
   graphQLClient.request(getProducts).then((data:[Product]) => dispatch(loadProducts(data)))
 
+
+  socket.on("create product", () => {
+    graphQLClient.request(getProducts).then((data:[Product]) => dispatch(loadProducts(data)))
+  })
   socket.on("delete product", () => {
     graphQLClient.request(getProducts).then((data:[Product]) => dispatch(loadProducts(data)))
   })

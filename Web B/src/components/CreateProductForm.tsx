@@ -3,8 +3,10 @@ import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 
-import { graphQLClient, createProduct } from '../queries/Queries'
+import { graphQLClient, createProduct, updateProduct } from '../queries/Queries'
 import { socket } from '../features/socketConnection/connection';
+import { useSelector } from 'react-redux';
+import { selectCurrentProduct, selectIsEditing } from '../features/slices/productSlice';
 
 const style = {
     position: 'absolute' as 'absolute',
@@ -24,6 +26,9 @@ interface props {
 
 const CreateProductForm = ({ close }: props) => {
 
+    const isEditing = useSelector(selectIsEditing)
+    const currentProduct = useSelector(selectCurrentProduct)
+
     const [input, setInput] = useState({
         name: "",
         description: "",
@@ -31,23 +36,53 @@ const CreateProductForm = ({ close }: props) => {
         img: "",
     })
 
+    useEffect(() => {
+        setInput({
+            name: `${currentProduct.name}`,
+            description: `${currentProduct.description}`,
+            price: `${currentProduct.price}`,
+            img: `${currentProduct.img}`,
+        })
+    }, [currentProduct])
+
     const handleSumbit = (e: any) => {
         e.preventDefault()
-        graphQLClient.request(createProduct, {
-            name: input.name,
-            description: input.description,
-            price: Number(input.price),
-            img: input.img,
-        }).then(() => {
-            setInput({
-                name: "",
-                description: "",
-                price: "",
-                img: "",
+        if (!isEditing) {
+            graphQLClient.request(createProduct, {
+                name: input.name,
+                description: input.description,
+                price: Number(input.price),
+                img: input.img,
+            }).then(() => {
+                setInput({
+                    name: "",
+                    description: "",
+                    price: "",
+                    img: "",
+                })
+                close()
+                socket.emit("create product")
             })
-            close()
-            socket.emit("create product")
-        })
+        } else {
+            graphQLClient.request(updateProduct, {
+                _id: currentProduct._id,
+                name: input.name,
+                description: input.description,
+                price: Number(input.price),
+                img: input.img,
+            }).then(() => {
+                setInput({
+                    name: "",
+                    description: "",
+                    price: "",
+                    img: "",
+                })
+                socket.emit("create product")
+                close()
+                
+            })
+        }
+
     }
 
     const handleChange = (e: any) => {
@@ -65,7 +100,7 @@ const CreateProductForm = ({ close }: props) => {
     }
 
     // useEffect(() => {
-    
+
     // }, [input])
 
     return (
@@ -113,7 +148,7 @@ const CreateProductForm = ({ close }: props) => {
 
                 <div className='createProductFormBtnContainer'>
                     <Button variant="contained" size="small" onClick={handleSumbit}>
-                        Create
+                        {isEditing? "Update" : "Create"}
                     </Button>
 
                     <Button variant="contained" size="small" onClick={handleCancel}>

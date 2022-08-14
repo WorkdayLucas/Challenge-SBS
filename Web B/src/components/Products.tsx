@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
-import { useSelector } from 'react-redux'
-import { selectProducts } from '../features/slices/productSlice'
+import { useDispatch, useSelector } from 'react-redux'
+import { loadProductToEdit, selectProducts } from '../features/slices/productSlice'
 import { Product } from '../types/types'
 
 import Table from '@mui/material/Table';
@@ -18,10 +18,16 @@ import { graphQLClient, deleteProduct } from '../queries/Queries'
 import { socket } from '../features/socketConnection/connection';
 
 import './Products.css'
+import ProductModal from './ProductModal';
+import { useProductModal } from './useProductModal';
 
 
 
 const Products = () => {
+
+  const dispatch = useDispatch() 
+
+  const [isOpenModal, openModal, closeModal] = useProductModal(false)
 
   const products: [Product] | [] = useSelector(selectProducts)
 
@@ -55,11 +61,21 @@ const Products = () => {
               <TableCell align="right">{product._id}</TableCell>
               <TableCell align="right">{product.name}</TableCell>
               <TableCell align="right">{"$" + product.price}</TableCell>
-              <TableCell align="right">{product.description}</TableCell>
+              <TableCell align="right">{`${product.description.substring(0,40)}${product.description.length>40? "..." : ""}`}</TableCell>
               <TableCell align="right">
-                <Button variant="contained" size="small">
+                <Button variant="contained" size="small" onClick={()=>{                 
+                  dispatch(loadProductToEdit({
+                    img: product.img,
+                    name: product.name,
+                    description: product.description,
+                    price: product.price,
+                    _id: product._id,
+                    set: true
+                  })); 
+                  openModal()}}>
                   Edit
                 </Button>
+                <ProductModal isOpen={isOpenModal} closeModal={closeModal}/>
                 <IconButton aria-label="delete" onClick={() => { handleDelete(product._id) }}>
                   <DeleteIcon />
                 </IconButton>

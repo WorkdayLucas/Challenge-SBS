@@ -37,6 +37,25 @@ export const createProduct = gql`
     }
 `
 
+export const updateProduct = gql`
+    mutation UpdateProduct($_id: ID!, $name: String!, $description: String!, $price: Int!, $img: String!) {
+        updateProduct (
+            _id: $_id,
+            input: {
+            name: $name,
+            description: $description
+            price: $price
+            img: $img
+            }) {
+            _id
+            name
+            description
+            price
+            img
+        }
+    }
+`
+
 export const deleteProduct = gql`
     mutation DeleteProduct($_id: ID!) {
         deleteProduct (_id: $_id) {
