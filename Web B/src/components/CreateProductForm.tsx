@@ -6,7 +6,6 @@ import Button from '@mui/material/Button';
 import { graphQLClient, createProduct } from '../queries/Queries'
 import { socket } from '../features/socketConnection/connection';
 
-
 const style = {
     position: 'absolute' as 'absolute',
     top: '50%',
@@ -24,7 +23,6 @@ interface props {
 }
 
 const CreateProductForm = ({ close }: props) => {
-
 
     const [input, setInput] = useState({
         name: "",
@@ -66,9 +64,9 @@ const CreateProductForm = ({ close }: props) => {
         close()
     }
 
-    useEffect(() => {
-        console.log(input)
-    }, [input])
+    // useEffect(() => {
+    
+    // }, [input])
 
     return (
         <Box sx={style}>

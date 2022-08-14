@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { selectProducts } from '../features/slices/productSlice'
 import { Product } from '../types/types'
 
@@ -10,15 +10,20 @@ import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 
+import { useProductModal } from './useProductModal';
+import ProductModal from './ProductModal';
+
+import { loadCurrentProduct } from '../features/slices/productSlice';
+
 import './Products.css'
 
 
 const Products = () => {
 
   const products: [Product] | [] = useSelector(selectProducts)
-  console.log(products)
+  const [isOpenModal, openModal, closeModal] = useProductModal(false)
 
-
+  const dispatch = useDispatch()
 
   return (
     <div className='productsContainer'>
@@ -40,7 +45,20 @@ const Products = () => {
                   </Typography>
                 </CardContent>
                 <CardActions>
-                  <Button size="small">Ver mas</Button>
+                  <Button size="small" onClick={()=>{
+                    dispatch(loadCurrentProduct({
+                      img: product.img,
+                      name: product.name,
+                      description: product.description,
+                      price: product.price,
+                      _id: product._id
+                    }));
+                    openModal()
+                  }}>Ver mas</Button>
+                  <ProductModal 
+                  isOpen={isOpenModal} 
+                  closeModal={closeModal} 
+                  />
                 </CardActions>
               </Card>
             </li>

@@ -17,17 +17,13 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { graphQLClient, deleteProduct } from '../queries/Queries'
 import { socket } from '../features/socketConnection/connection';
 
-
 import './Products.css'
 
 
 
 const Products = () => {
 
-
-
   const products: [Product] | [] = useSelector(selectProducts)
-  console.log(products)
 
   const handleDelete = (id: String) => {
     graphQLClient.request(deleteProduct, { _id: id })

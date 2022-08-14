@@ -6,10 +6,17 @@
 
 .productsContainer{
     display: flex;
+    justify-content: center;
 }
 
 .productImg {
     width: 7rem;
     height: 7rem;
+    margin: 0;
+}
+
+.modalImg{
+    width: 25rem;
+    
     margin: 0;
 }
