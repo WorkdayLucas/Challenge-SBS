@@ -4,23 +4,41 @@ import { State } from '../redux/store';
 
 interface productsState {
   products: [Product] | []
+  currentProduct: Product
 }
 
 const initialState: productsState = {
-  products: []
+  products: [],
+  currentProduct: {
+    img: "",
+    name: "",
+    description: "",
+    price: 0,
+    _id: ""
+  }
 }
 
 const productSlice = createSlice({
   name: 'productsData',
   initialState,
-  reducers:{
-   loadProducts:(state, action)=>{
+  reducers: {
+    loadProducts: (state, action) => {
       state.products = action.payload.products
-   },
+    },
+    loadCurrentProduct: (state, action) => {
+      state.currentProduct = {
+        img: action.payload.img,
+        name: action.payload.name,
+        description: action.payload.description,
+        price: action.payload.price,
+        _id: action.payload._id
+      }
+    },
   },
 })
 
-export const { loadProducts } = productSlice.actions
+export const { loadProducts, loadCurrentProduct} = productSlice.actions
 export default productSlice.reducer
 
 export const selectProducts = (state: State) => state.productsData.products
+export const selectCurrentProduct = (state: State) => state.productsData.currentProduct
