@@ -15,6 +15,8 @@ const Home = () => {
         _id
         name
         description
+        price
+        img
       }
     }
     `
