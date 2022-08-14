@@ -8,7 +8,7 @@ export const graphQLClient = new GraphQLClient(endpoint, {
     },
 })
 
-export const products = gql`
+export const getProducts = gql`
 {
   products {
     _id
