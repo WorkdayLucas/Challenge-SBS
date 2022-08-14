@@ -1,3 +1,15 @@
 .productList {
+    display: flex;
+    flex-wrap: wrap;
     list-style: none;
+}
+
+.productsContainer{
+    display: flex;
+}
+
+.productImg {
+    width: 7rem;
+    height: 7rem;
+    margin: 0;
 }
