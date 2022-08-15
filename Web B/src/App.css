@@ -1,6 +1,7 @@
 .App {
+  display: flex;
+  flex-direction: column;
   text-align: center;
-  height: 100vh;
 }
 
 .App-logo {
@@ -30,12 +31,26 @@
 }
 
 .homContainer {
-  height: 100%;
+  padding-top: 10vh;
+  height: 90vh;
+  overflow: auto;
+}
+
+.homContainer::-webkit-scrollbar {
+  width: 8px;
+}
+
+.homContainer::-webkit-scrollbar-track {
+  background: rgb(236, 239, 240);
+}
+
+.homContainer::-webkit-scrollbar-thumb {
+  background-color: rgb(153, 153, 153);
+  border-radius: 20px;
 }
 
 footer {
-  position: relative;
-  bottom: 0;
+position: relative;
 }
 
 @keyframes App-logo-spin {

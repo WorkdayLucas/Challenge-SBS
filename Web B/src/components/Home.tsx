@@ -9,7 +9,7 @@ import '../App.css'
 
 
 import { Product } from '../types/types'
-import NavBar from './NavBar'
+
 
 const Home = () => {
 
@@ -25,7 +25,6 @@ const Home = () => {
 
   return (
     <div className='homContainer'>
-      <NavBar/>
       <Products />
     </div>
   )

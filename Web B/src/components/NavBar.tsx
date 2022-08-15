@@ -67,7 +67,7 @@ export default function NavBar() {
   const [isOpenModal, openModal, closeModal] = useProductModal(false)
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <Box sx={{ flexGrow: 1, position: "fixed", width: "100%", zIndex: 1000}}>
       <AppBar position="static">
         <Toolbar>
           <IconButton
@@ -115,7 +115,8 @@ export default function NavBar() {
         sx={{
           display: "flex",
           flexDirection: "column",
-          position: "absolute",
+          position: "fixed",
+          zIndex: 1000,
           left: menuVisivility ? 0 : -300,
           top: 0,
           width: 300,

@@ -49,7 +49,7 @@ const Products = () => {
             <TableCell align="right">Setings</TableCell>
           </TableRow>
         </TableHead>
-        <TableBody>
+        <TableBody >
           {products.map((product) => (
             <TableRow
               key={`${product.key}`}
