@@ -1,4 +1,4 @@
-# Challenge-BSB, Lucas Emanuel Montero
+# Challenge-SBS, Lucas Emanuel Montero
 
 # Funcionalidades:
 
