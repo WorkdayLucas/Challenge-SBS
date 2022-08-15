@@ -4,7 +4,7 @@ import { socket } from '../features/socketConnection/connection'
 import Products from './Products'
 import { useDispatch } from 'react-redux'
 import { loadProducts } from '../features/slices/productSlice'
-
+import '../App.css'
 
 
 
@@ -24,7 +24,7 @@ const Home = () => {
   })
 
   return (
-    <div>
+    <div className='homContainer'>
       <NavBar/>
       <Products />
     </div>

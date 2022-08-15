@@ -9,6 +9,9 @@ function App() {
     <div className="App">
       <CssBaseline />
       <Home />
+      <footer>
+        <p>Lucas Emanuel Montero, date deploy: 15/08/2022</p>
+      </footer>
     </div>
   );
 }

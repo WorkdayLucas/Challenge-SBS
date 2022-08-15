@@ -15,6 +15,8 @@ import ProductModal from './ProductModal';
 
 import { loadCurrentProduct } from '../features/slices/productSlice';
 
+import img from '../images/without-prodcuts.png'
+
 import './Products.css'
 
 
@@ -27,45 +29,50 @@ const Products = () => {
 
   return (
     <div className='productsContainer'>
-      <ul className='productList'>
-        {
-          products.map((product: Product) => {
-            return <li key={`${product.key}`}>
-              <Card sx={{ width: 350, height: 260, margin: 1 }}>
-                <CardContent>
-                  <img className='productImg' src={`${product.img}`}/>
-                  <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-                    {product.name}
-                  </Typography>
-                  <Typography variant="body2">
-                    {`${product.description.substring(0,40)}${product.description.length>40? "..." : ""}`}
-                  </Typography>
-                  <Typography variant="body2">
-                    {`$ ${product.price}`}
-                  </Typography>
-                </CardContent>
-                <CardActions>
-                  <Button size="small" onClick={()=>{
-                    dispatch(loadCurrentProduct({
-                      img: product.img,
-                      name: product.name,
-                      description: product.description,
-                      price: product.price,
-                      _id: product._id,
-                      key: product.key,
-                    }));
-                    openModal()
-                  }}>Ver mas</Button>
-                  <ProductModal 
-                  isOpen={isOpenModal} 
-                  closeModal={closeModal} 
-                  />
-                </CardActions>
-              </Card>
-            </li>
-          })
-        }
-      </ul>
+      {products.length > 0 ?
+        <ul className='productList'>
+          {
+            products.map((product: Product) => {
+              return <li key={`${product.key}`}>
+                <Card sx={{ width: 350, height: 260, margin: 1 }}>
+                  <CardContent>
+                    <img className='productImg' src={`${product.img}`} />
+                    <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+                      {product.name}
+                    </Typography>
+                    <Typography variant="body2">
+                      {`${product.description.substring(0, 40)}${product.description.length > 40 ? "..." : ""}`}
+                    </Typography>
+                    <Typography variant="body2">
+                      {`$ ${product.price}`}
+                    </Typography>
+                  </CardContent>
+                  <CardActions>
+                    <Button size="small" onClick={() => {
+                      dispatch(loadCurrentProduct({
+                        img: product.img,
+                        name: product.name,
+                        description: product.description,
+                        price: product.price,
+                        _id: product._id,
+                        key: product.key,
+                      }));
+                      openModal()
+                    }}>Ver mas</Button>
+                    <ProductModal
+                      isOpen={isOpenModal}
+                      closeModal={closeModal}
+                    />
+                  </CardActions>
+                </Card>
+              </li>
+            })
+          }
+        </ul> : 
+        <div> 
+          <img src={img} alt="empty" width={"500px"}/>
+        </div>
+      }
     </div>
   )
 }
