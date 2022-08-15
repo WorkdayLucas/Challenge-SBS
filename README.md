@@ -9,7 +9,7 @@
 ### NavBar con side menu colapsable.
 
 ## WEB B:
-### Conectarse a la base de datos y renderizar una lista de productos con sus datos(imgen, nombre, precio y descripción abreviada) en una grilla.
+### Conectarse a la base de datos y renderizar una lista de productos con sus datos(imagen, nombre, precio y descripción abreviada) en una grilla.
 ### Cada item tiene la opción de ser editado o eliminado.
 ### Se pueden crear nuevo productos con un formulario.
 ### Emitir eventos que actualizan los datos en cualquier app que escuche dichos eventos.
