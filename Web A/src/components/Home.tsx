@@ -14,10 +14,7 @@ const Home = () => {
 
   graphQLClient.request(getProducts).then((data:[Product]) => dispatch(loadProducts(data)))
 
-  socket.on("create product", () => {
-    graphQLClient.request(getProducts).then((data:[Product]) => dispatch(loadProducts(data)))
-  })
-  socket.on("delete product", () => {
+  socket.on("update list", () => {
     graphQLClient.request(getProducts).then((data:[Product]) => dispatch(loadProducts(data)))
   })
 

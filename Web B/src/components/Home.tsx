@@ -5,35 +5,28 @@ import Products from './Products'
 import { useDispatch } from 'react-redux'
 import { loadProducts } from '../features/slices/productSlice'
 
-import { useProductModal } from './useProductModal';
-import ProductModal from './ProductModal';
 
-import Button from '@mui/material/Button';
+
+
 import { Product } from '../types/types'
+import NavBar from './NavBar'
 
 const Home = () => {
 
-  const [isOpenModal, openModal, closeModal] = useProductModal(false)
+ 
   const dispatch = useDispatch()
 
   graphQLClient.request(getProducts).then((data:[Product]) => dispatch(loadProducts(data)))
 
 
-  socket.on("create product", () => {
-    graphQLClient.request(getProducts).then((data:[Product]) => dispatch(loadProducts(data)))
-  })
-  socket.on("delete product", () => {
+  socket.on("update list", () => {
     graphQLClient.request(getProducts).then((data:[Product]) => dispatch(loadProducts(data)))
   })
 
   return (
     <div>
+      <NavBar/>
       <Products />
-      <Button variant="contained" size="small" onClick={openModal}>
-        +
-      </Button>
-      <ProductModal isOpen={isOpenModal} closeModal={closeModal}/>
-
     </div>
   )
 }
