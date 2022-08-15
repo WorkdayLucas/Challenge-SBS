@@ -121,7 +121,7 @@ const CreateProductForm = ({ close }: props) => {
 
     const handleChange = (e: any) => {
         if (e.target.name !== "price") {
-            setInput({ ...input, [e.target.name]: e.target.value.trim() })
+            setInput({ ...input, [e.target.name]: e.target.value.trimStart() })
         }
         switch (e.target.name) {
             case "name":
