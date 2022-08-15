@@ -12,6 +12,7 @@ export const getProducts = gql`
 {
   products {
     _id
+    key
     name
     description
     price
