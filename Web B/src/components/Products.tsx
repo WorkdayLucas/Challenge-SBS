@@ -59,7 +59,7 @@ const Products = () => {
                 <img className='productImg' src={`${product.img}`} alt={`${product.name}`}/>
               </TableCell>
               <TableCell align="right">{product._id}</TableCell>
-              <TableCell align="right">{product.name}</TableCell>
+              <TableCell align="right">{`${product.name.substring(0, 40)}${product.name.length > 40 ? "..." : ""}`}</TableCell>
               <TableCell align="right">{"$" + product.price}</TableCell>
               <TableCell align="right">{`${product.description.substring(0,40)}${product.description.length>40? "..." : ""}`}</TableCell>
               <TableCell align="right">
