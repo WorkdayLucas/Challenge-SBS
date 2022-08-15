@@ -38,7 +38,7 @@ const Products = () => {
                   <CardContent>
                     <img className='productImg' src={`${product.img}`} />
                     <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-                      {product.name}
+                      {`${product.name.substring(0, 40)}${product.name.length > 40 ? "..." : ""}`}
                     </Typography>
                     <Typography variant="body2">
                       {`${product.description.substring(0, 40)}${product.description.length > 40 ? "..." : ""}`}
