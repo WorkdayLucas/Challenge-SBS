@@ -1,12 +1,17 @@
 .productList {
     display: flex;
     flex-wrap: wrap;
+    justify-content: flex-start;
     list-style: none;
+    align-items: center;
+    width: 85%;
 }
 
 .productsContainer{
     display: flex;
     justify-content: center;
+    align-items: center;
+
 }
 
 .productImg {

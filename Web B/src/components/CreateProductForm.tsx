@@ -77,7 +77,7 @@ const CreateProductForm = ({ close }: props) => {
                     price: "",
                     img: "",
                 })
-                socket.emit("create product")
+                socket.emit("update product")
                 close()
                 
             })
