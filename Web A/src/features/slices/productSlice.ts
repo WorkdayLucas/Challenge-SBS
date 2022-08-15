@@ -14,7 +14,8 @@ const initialState: productsState = {
     name: "",
     description: "",
     price: 0,
-    _id: ""
+    _id: "",
+    key: 0,
   }
 }
 
@@ -31,7 +32,8 @@ const productSlice = createSlice({
         name: action.payload.name,
         description: action.payload.description,
         price: action.payload.price,
-        _id: action.payload._id
+        _id: action.payload._id,
+        key: action.payload.key,
       }
     },
   },

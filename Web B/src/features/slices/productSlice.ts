@@ -16,6 +16,7 @@ const initialState: productsState = {
     description: "",
     price: 0,
     _id: "",
+    key: 0,
   },
   isEditing: false
 }
@@ -33,7 +34,8 @@ const productSlice = createSlice({
       name: action.payload.name,
       description: action.payload.description,
       price: action.payload.price,
-      _id: action.payload._id
+      _id: action.payload._id,
+      key: action.payload.key
     }
     state.isEditing = action.payload.set
   },
