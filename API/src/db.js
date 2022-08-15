@@ -1,10 +1,11 @@
 import mongoose, { connect } from "mongoose";
-
+import dotenv from 'dotenv'
+dotenv.config
 
 
 export async function Connect() {
     try {
-        mongoose.connect('mongodb://localhost/challenge-SBS', {
+        mongoose.connect(process.env.MONGODB_URI, {
             useNewUrlParser: true
         })
 
