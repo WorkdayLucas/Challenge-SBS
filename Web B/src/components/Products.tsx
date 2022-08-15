@@ -52,7 +52,7 @@ const Products = () => {
         <TableBody>
           {products.map((product) => (
             <TableRow
-              // key={product.name}
+              key={`${product.key}`}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
               <TableCell component="th" scope="row">
@@ -70,6 +70,7 @@ const Products = () => {
                     description: product.description,
                     price: product.price,
                     _id: product._id,
+                    key: product.key,
                     set: true
                   })); 
                   openModal()}}>

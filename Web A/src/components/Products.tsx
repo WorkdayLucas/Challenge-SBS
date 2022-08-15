@@ -30,7 +30,7 @@ const Products = () => {
       <ul className='productList'>
         {
           products.map((product: Product) => {
-            return <li>
+            return <li key={`${product.key}`}>
               <Card sx={{ width: 350, height: 260, margin: 1 }}>
                 <CardContent>
                   <img className='productImg' src={`${product.img}`}/>
@@ -51,7 +51,8 @@ const Products = () => {
                       name: product.name,
                       description: product.description,
                       price: product.price,
-                      _id: product._id
+                      _id: product._id,
+                      key: product.key,
                     }));
                     openModal()
                   }}>Ver mas</Button>
