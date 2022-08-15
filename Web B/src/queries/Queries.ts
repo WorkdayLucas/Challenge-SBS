@@ -1,6 +1,6 @@
 import { GraphQLClient, gql } from 'graphql-request'
 
-const endpoint = 'http://localhost:3001/api-products/'
+const endpoint = `${process.env.REACT_APP_API || "http://localhost:3001"}api-products/`
 
 export const graphQLClient = new GraphQLClient(endpoint, {
     headers: {
