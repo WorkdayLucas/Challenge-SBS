@@ -13,9 +13,11 @@ export const useProductModal = (initialValue = false) => {
 			name: "",
 			description: "",
 			price: 0,
-			_id: ""
+			_id: "",
+			key: 0,
 		}))
-		setIsOpen(false)};
+		setIsOpen(false)
+	};
 
 	return [isOpen, openModal, closeModal] as const;
 };

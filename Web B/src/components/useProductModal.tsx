@@ -14,6 +14,7 @@ export const useProductModal = (initialValue = false) => {
 			description: "",
 			price: 0,
 			_id: "",
+			key: 0,
 			set: false
 		}))
 		setIsOpen(false)};
