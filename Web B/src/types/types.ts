@@ -5,6 +5,6 @@ export interface Product {
     key: Number,
     name: String,
     description: String,
-    price: Number,
+    price: Number|null,
     img: String,
 }

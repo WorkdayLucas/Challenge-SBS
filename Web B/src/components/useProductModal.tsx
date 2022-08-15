@@ -12,7 +12,7 @@ export const useProductModal = (initialValue = false) => {
 			img: "",
 			name: "",
 			description: "",
-			price: 0,
+			price: null,
 			_id: "",
 			key: 0,
 			set: false

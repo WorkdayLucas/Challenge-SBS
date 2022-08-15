@@ -24,16 +24,31 @@ interface props {
     close: any
 }
 
+interface productInput {
+    name: String,
+    description: String,
+    price: String,
+    img: String,
+}
+
 const CreateProductForm = ({ close }: props) => {
+
 
     const isEditing = useSelector(selectIsEditing)
     const currentProduct = useSelector(selectCurrentProduct)
 
-    const [input, setInput] = useState({
+    const [input, setInput] = useState<productInput>({
         name: "",
         description: "",
         price: "",
         img: "",
+    })
+
+    const [errInput, setErrInput] = useState({
+        nameErr: "",
+        descriptionErr: "",
+        priceErr: "",
+        imgErr: "",
     })
 
     useEffect(() => {
@@ -47,46 +62,102 @@ const CreateProductForm = ({ close }: props) => {
 
     const handleSumbit = (e: any) => {
         e.preventDefault()
-        if (!isEditing) {
-            graphQLClient.request(createProduct, {
-                name: input.name,
-                description: input.description,
-                price: Number(input.price),
-                img: input.img,
-            }).then(() => {
-                setInput({
-                    name: "",
-                    description: "",
-                    price: "",
-                    img: "",
+
+
+        setErrInput({
+            nameErr: input.name === "" ? "Name required" : "",
+            descriptionErr: input.description === "" ? "Description required" : "",
+            priceErr: input.price === 'null'|| input.price === '' ? "Price required" : "",
+            imgErr: input.img === "" ? "Image required" : "",
+        })
+
+        if (errInput.nameErr === "" &&
+            errInput.descriptionErr === "" &&
+            errInput.priceErr === "" &&
+            errInput.imgErr === "" &&
+            input.name !== "" &&
+            input.description !== "" &&
+            input.price !== "" &&
+            input.img !== "") {
+            if (!isEditing) {
+                graphQLClient.request(createProduct, {
+                    name: input.name,
+                    description: input.description,
+                    price: Number(input.price),
+                    img: input.img,
+                }).then(() => {
+                    setInput({
+                        name: "",
+                        description: "",
+                        price: `${currentProduct.price}`,
+                        img: "",
+                    })
+                    close()
+                    socket.emit("create product")
+                }).catch((err) => { })
+            } else {
+                graphQLClient.request(updateProduct, {
+                    _id: currentProduct._id,
+                    name: input.name,
+                    description: input.description,
+                    price: Number(input.price),
+                    img: input.img,
+                }).then(() => {
+                    setInput({
+                        name: "",
+                        description: "",
+                        price: `${currentProduct.price}`,
+                        img: "",
+                    })
+                    socket.emit("update product")
+                    close()
+
                 })
-                close()
-                socket.emit("create product")
-            })
-        } else {
-            graphQLClient.request(updateProduct, {
-                _id: currentProduct._id,
-                name: input.name,
-                description: input.description,
-                price: Number(input.price),
-                img: input.img,
-            }).then(() => {
-                setInput({
-                    name: "",
-                    description: "",
-                    price: "",
-                    img: "",
-                })
-                socket.emit("update product")
-                close()
-                
-            })
+            }
         }
+
 
     }
 
     const handleChange = (e: any) => {
-        setInput({ ...input, [e.target.name]: e.target.value })
+        if (e.target.name !== "price") {
+            setInput({ ...input, [e.target.name]: e.target.value.trim() })
+        }
+        switch (e.target.name) {
+            case "name":
+                if (e.target.value === "") {
+                    setErrInput({ ...errInput, nameErr: "Name required" })
+                } else if (e.target.value !== "") {
+                    setErrInput({ ...errInput, nameErr: "" })
+                }
+                break
+            case "description":
+                if (e.target.value === "") {
+                    setErrInput({ ...errInput, descriptionErr: "Description required" })
+                } else if (e.target.value !== "") {
+                    setErrInput({ ...errInput, descriptionErr: "" })
+                }
+                break
+            case "price":
+                if (e.target.value >= 0) {
+                    setInput({ ...input, price: e.target.value })
+                }
+                if (e.target.value === "") {
+                    setErrInput({ ...errInput, priceErr: "Price required" })
+                } else if (e.target.value !== "") {
+                    setErrInput({ ...errInput, priceErr: "" })
+                }
+                break
+            case "img":
+                if (e.target.value === "") {
+                    setErrInput({ ...errInput, imgErr: "Image required" })
+                } else if (e.target.value !== "") {
+                    setErrInput({ ...errInput, imgErr: "" })
+                }
+                break
+            default:
+
+        }
     }
 
     const handleCancel = () => {
@@ -96,64 +167,83 @@ const CreateProductForm = ({ close }: props) => {
             price: "",
             img: "",
         })
+        setErrInput({
+            nameErr: "",
+            descriptionErr: "",
+            priceErr: "",
+            imgErr: "",
+        })
         close()
     }
 
     // useEffect(() => {
+
 
     // }, [input])
 
     return (
         <Box sx={style}>
             <form className='createProductForm' >
+
                 <TextField
                     required
-                    id="standard-required"
+                    error={errInput.nameErr === "" ? false : true}
+                    id="standard-error-helper-text-required"
                     label="Name"
                     name="name"
                     value={input.name}
-                    variant="standard"
-                    onChange={handleChange}
-                />
-                <TextField
-                    required
-                    id="standard-required"
-                    label="Description"
-                    multiline
-                    rows={4}
-                    name="description"
-                    value={input.description}
+                    helperText={errInput.nameErr}
                     variant="standard"
                     onChange={handleChange}
                 />
 
                 <TextField
                     required
-                    id="standard-required"
+                    error={errInput.descriptionErr === "" ? false : true}
+                    id="standard-error-helper-text-required"
+                    label="Description"
+                    multiline
+                    rows={4}
+                    name="description"
+                    value={input.description}
+                    helperText={errInput.descriptionErr}
+                    variant="standard"
+                    onChange={handleChange}
+                />
+
+                <TextField
+                    required
+                    error={errInput.priceErr === "" ? false : true}
+                    id="standard-error-helper-number-required"
                     label="Price"
                     name="price"
+                    type="number"
                     value={input.price}
+                    helperText={errInput.priceErr}
                     variant="standard"
                     onChange={handleChange}
                 />
                 <TextField
                     required
-                    id="standard-required"
+                    error={errInput.imgErr === "" ? false : true}
+                    id="standard-error-helper-text-required"
                     label="Image"
                     name="img"
                     value={input.img}
+                    helperText={errInput.imgErr}
                     variant="standard"
                     onChange={handleChange}
                 />
 
                 <div className='createProductFormBtnContainer'>
                     <Button variant="contained" size="small" onClick={handleSumbit}>
-                        {isEditing? "Update" : "Create"}
+                        {isEditing ? "Update" : "Create"}
                     </Button>
 
                     <Button variant="contained" size="small" onClick={handleCancel}>
                         Cancel
                     </Button>
+
                 </div>
             </form>
         </Box>

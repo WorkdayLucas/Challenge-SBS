@@ -14,7 +14,7 @@ const initialState: productsState = {
     img: "",
     name: "",
     description: "",
-    price: 0,
+    price: null,
     _id: "",
     key: 0,
   },
