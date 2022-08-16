@@ -85,7 +85,7 @@ export default function NavBar() {
   }
 
   return (
-    <Box sx={{ flexGrow: 1}}>
+    <Box sx={{ flexGrow: 1, position: "fixed", width: "100%", zIndex: 1000 }}>
       <AppBar position="static">
         <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
           <IconButton
@@ -119,7 +119,7 @@ export default function NavBar() {
         sx={{
           display: "flex",
           flexDirection: "column",
-          position: "absolute",
+          position: "fixed",
           zIndex: 100,
           left: menuVisivility ? 0 : -300,
           top: 0,

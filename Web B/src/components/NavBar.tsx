@@ -173,6 +173,7 @@ useEffect(()=>{
           alignItems: "center",
           height: "1.2rem",
           width: "100%",
+          position: "fixed"
         }}>
           <ArrowBackIcon
             sx={{
