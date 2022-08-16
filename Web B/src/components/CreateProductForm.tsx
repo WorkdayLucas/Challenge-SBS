@@ -7,11 +7,10 @@ import { graphQLClient, createProduct, updateProduct } from '../queries/Queries'
 import { socket } from '../features/socketConnection/connection';
 import { useSelector } from 'react-redux';
 import { selectCurrentProduct, selectIsEditing } from '../features/slices/productSlice';
-import zIndex from '@mui/material/styles/zIndex';
+
 
 const style = {
     position: 'absolute' as 'absolute',
-    top: '90%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
     width: 400,
@@ -27,7 +26,6 @@ const style = {
     '&::-webkit-scrollbar-track': {
         background: "rgb(236, 239, 240)",
     },
-
     '&::-webkit-scrollbar-thumb': {
         backgroundColor: "rgb(153, 153, 153)",
         borderRadius: "20px",

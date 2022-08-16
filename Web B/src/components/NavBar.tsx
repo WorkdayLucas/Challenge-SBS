@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { styled, alpha } from '@mui/material/styles';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -18,8 +18,8 @@ import ProductModal from './ProductModal';
 
 import { graphQLClient, getProducts } from '../queries/Queries'
 import { Product } from '../types/types';
-import { useDispatch } from 'react-redux';
-import { loadProducts } from '../features/slices/productSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { loadProducts, selectIsEditing } from '../features/slices/productSlice';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -75,6 +75,7 @@ export default function NavBar() {
 
   const dispatch = useDispatch()
 
+  const isEditing = useSelector(selectIsEditing)
 
   const handleChange = (e: any) => {
     setSearch(e.target.value.trimStart())
@@ -92,11 +93,18 @@ export default function NavBar() {
     }
   }
 
+useEffect(()=>{
+  if(isEditing){
+    openModal()
+  }
+},[isEditing])
+
 
   return (
     <Box sx={{ flexGrow: 1, position: "fixed", width: "100%", zIndex: 1000 }}>
       <AppBar position="static">
         <Toolbar>
+          
           <IconButton
             size="large"
             edge="start"
@@ -113,7 +121,7 @@ export default function NavBar() {
             variant="h6"
             noWrap
             component="div"
-            sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
+            sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' }, fontSize: "1.7rem" }}
           >
             Products
           </Typography>
