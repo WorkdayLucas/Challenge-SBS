@@ -16,6 +16,19 @@ const style = {
 	border: '2px solid #000',
 	boxShadow: 24,
 	p: 4,
+	maxHeight: "90vh",
+    overflow: "auto",
+    '&::-webkit-scrollbar': {
+        width: "8px",
+    },
+    '&::-webkit-scrollbar-track': {
+        background: "rgb(236, 239, 240)",
+    },
+
+    '&::-webkit-scrollbar-thumb': {
+        backgroundColor: "rgb(153, 153, 153)",
+        borderRadius: "20px",
+    },
 };
 
 
@@ -34,13 +47,13 @@ const ProductModal = ({ children, isOpen, closeModal }: any | void) => {
 					Id: {`${product._id}`}
 				</Typography>
 				<img className='modalImg' src={`${product.img}`} />
-				<Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+				<Typography sx={{ fontSize: "1.2rem", color: "#222", fontWeight: "500"  }} color="text.secondary" gutterBottom>
 					{product.name}
 				</Typography>
-				<Typography variant="body2">
+				<Typography sx={{marginTop: "1rem" }} variant="body2">
 					{`${product.description}`}
 				</Typography>
-				<Typography variant="body2">
+				<Typography sx={{ fontSize: "1.4rem", marginTop: "1rem", color: "#222", fontWeight: "500" }} variant="body2">
 					{`$ ${product.price}`}
 				</Typography>
 

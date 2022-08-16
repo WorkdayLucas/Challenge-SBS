@@ -7,13 +7,28 @@
     flex-direction: column;
 }
 
+
+
+.createProductForm textarea::-webkit-scrollbar {
+    width: 8px;
+}
+
+.createProductForm textarea::-webkit-scrollbar-track {
+    background: rgb(236, 239, 240);
+}
+
+.createProductForm textarea::-webkit-scrollbar-thumb {
+    background-color: rgb(153, 153, 153);
+    border-radius: 20px;
+}
+
 .createProductFormBtnContainer {
     display: flex;
     justify-content: end;
     margin-top: 1rem;
 }
 
-.createProductFormBtnContainer button{
+.createProductFormBtnContainer button {
     margin-left: 5px;
 }
 

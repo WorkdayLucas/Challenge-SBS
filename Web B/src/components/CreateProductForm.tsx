@@ -7,10 +7,11 @@ import { graphQLClient, createProduct, updateProduct } from '../queries/Queries'
 import { socket } from '../features/socketConnection/connection';
 import { useSelector } from 'react-redux';
 import { selectCurrentProduct, selectIsEditing } from '../features/slices/productSlice';
+import zIndex from '@mui/material/styles/zIndex';
 
 const style = {
     position: 'absolute' as 'absolute',
-    top: '50%',
+    top: '90%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
     width: 400,
@@ -18,6 +19,20 @@ const style = {
     border: '2px solid #000',
     boxShadow: 24,
     p: 4,
+    maxHeight: "90vh",
+    overflow: "auto",
+    '&::-webkit-scrollbar': {
+        width: "8px",
+    },
+    '&::-webkit-scrollbar-track': {
+        background: "rgb(236, 239, 240)",
+    },
+
+    '&::-webkit-scrollbar-thumb': {
+        backgroundColor: "rgb(153, 153, 153)",
+        borderRadius: "20px",
+    },
+
 };
 
 interface props {
@@ -67,7 +82,7 @@ const CreateProductForm = ({ close }: props) => {
         setErrInput({
             nameErr: input.name === "" ? "Name required" : "",
             descriptionErr: input.description === "" ? "Description required" : "",
-            priceErr: input.price === 'null'|| input.price === '' ? "Price required" : "",
+            priceErr: input.price === 'null' || input.price === '' ? "Price required" : "",
             imgErr: input.img === "" ? "Image required" : "",
         })
 
@@ -127,13 +142,17 @@ const CreateProductForm = ({ close }: props) => {
             case "name":
                 if (e.target.value === "") {
                     setErrInput({ ...errInput, nameErr: "Name required" })
-                } else if (e.target.value !== "") {
+                } else if (e.target.value.length > 50) {
+                    setErrInput({ ...errInput, nameErr: "50 characters max" })
+                }else if (e.target.value !== "") {
                     setErrInput({ ...errInput, nameErr: "" })
                 }
                 break
             case "description":
                 if (e.target.value === "") {
                     setErrInput({ ...errInput, descriptionErr: "Description required" })
+                }else if (e.target.value.length > 500) {
+                    setErrInput({ ...errInput, descriptionErr: "500 characters max" })
                 } else if (e.target.value !== "") {
                     setErrInput({ ...errInput, descriptionErr: "" })
                 }
@@ -151,6 +170,8 @@ const CreateProductForm = ({ close }: props) => {
             case "img":
                 if (e.target.value === "") {
                     setErrInput({ ...errInput, imgErr: "Image required" })
+                } else if (!(/\.(jpg|png|gif)$/i).test(e.target.value)) {
+                    setErrInput({ ...errInput, imgErr: "Url no contiene un archivo valido" })
                 } else if (e.target.value !== "") {
                     setErrInput({ ...errInput, imgErr: "" })
                 }
@@ -223,6 +244,9 @@ const CreateProductForm = ({ close }: props) => {
                     variant="standard"
                     onChange={handleChange}
                 />
+                {input.img !== "" && errInput.imgErr === "" ?
+                    <img src={`${input.img}`} /> : ""
+                }
                 <TextField
                     required
                     error={errInput.imgErr === "" ? false : true}
