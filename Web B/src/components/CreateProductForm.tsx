@@ -7,6 +7,7 @@ import { graphQLClient, createProduct, updateProduct } from '../queries/Queries'
 import { socket } from '../features/socketConnection/connection';
 import { useSelector } from 'react-redux';
 import { selectCurrentProduct, selectIsEditing } from '../features/slices/productSlice';
+import Swal from 'sweetalert2';
 
 
 const style = {
@@ -46,6 +47,17 @@ interface productInput {
 
 const CreateProductForm = ({ close }: props) => {
 
+    const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+    })
 
     const isEditing = useSelector(selectIsEditing)
     const currentProduct = useSelector(selectCurrentProduct)
@@ -105,9 +117,18 @@ const CreateProductForm = ({ close }: props) => {
                         price: `${currentProduct.price}`,
                         img: "",
                     })
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'Created successfully'
+                    })
                     close()
                     socket.emit("create product")
-                }).catch((err) => { })
+                }).catch((err) => {
+                    Toast.fire({
+                        icon: 'error',
+                        title: 'Something wrong'
+                    })
+                })
             } else {
                 graphQLClient.request(updateProduct, {
                     _id: currentProduct._id,
@@ -122,9 +143,18 @@ const CreateProductForm = ({ close }: props) => {
                         price: `${currentProduct.price}`,
                         img: "",
                     })
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'Updated successfully'
+                    })
                     socket.emit("update product")
                     close()
 
+                }).catch((err) => {
+                    Toast.fire({
+                        icon: 'error',
+                        title: 'Something wrong'
+                    })
                 })
             }
         }
@@ -142,14 +172,14 @@ const CreateProductForm = ({ close }: props) => {
                     setErrInput({ ...errInput, nameErr: "Name required" })
                 } else if (e.target.value.length > 50) {
                     setErrInput({ ...errInput, nameErr: "50 characters max" })
-                }else if (e.target.value !== "") {
+                } else if (e.target.value !== "") {
                     setErrInput({ ...errInput, nameErr: "" })
                 }
                 break
             case "description":
                 if (e.target.value === "") {
                     setErrInput({ ...errInput, descriptionErr: "Description required" })
-                }else if (e.target.value.length > 500) {
+                } else if (e.target.value.length > 500) {
                     setErrInput({ ...errInput, descriptionErr: "500 characters max" })
                 } else if (e.target.value !== "") {
                     setErrInput({ ...errInput, descriptionErr: "" })

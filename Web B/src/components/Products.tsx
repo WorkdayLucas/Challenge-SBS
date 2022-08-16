@@ -18,18 +18,42 @@ import { graphQLClient, deleteProduct } from '../queries/Queries'
 import { socket } from '../features/socketConnection/connection';
 
 import './Products.css'
+import Swal from 'sweetalert2';
 
 
 
 const Products = () => {
 
-  const dispatch = useDispatch() 
+  const Toast = Swal.mixin({
+    toast: true,
+    position: 'top-end',
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.addEventListener('mouseenter', Swal.stopTimer)
+      toast.addEventListener('mouseleave', Swal.resumeTimer)
+    }
+  })
+
+
+  const dispatch = useDispatch()
 
   const products: [Product] | [] = useSelector(selectProducts)
 
   const handleDelete = (id: String) => {
-    graphQLClient.request(deleteProduct, { _id: id })
-    socket.emit("delete product")
+    graphQLClient.request(deleteProduct, { _id: id }).then((res) => {
+      socket.emit("delete product")
+      Toast.fire({
+        icon: 'success',
+        title: 'Deleted successfully'
+      })
+    }).catch((err) => {
+      Toast.fire({
+        icon: 'error',
+        title: 'Something wrong'
+      })
+    })
   }
 
   return (
@@ -52,14 +76,14 @@ const Products = () => {
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
               <TableCell component="th" scope="row">
-                <img className='productImg' src={`${product.img}`} alt={`${product.name}`}/>
+                <img className='productImg' src={`${product.img}`} alt={`${product.name}`} />
               </TableCell>
               <TableCell align="right">{product._id}</TableCell>
               <TableCell align="right">{`${product.name.substring(0, 40)}${product.name.length > 40 ? "..." : ""}`}</TableCell>
               <TableCell align="right">{"$" + product.price}</TableCell>
-              <TableCell align="right">{`${product.description.substring(0,40)}${product.description.length>40? "..." : ""}`}</TableCell>
+              <TableCell align="right">{`${product.description.substring(0, 40)}${product.description.length > 40 ? "..." : ""}`}</TableCell>
               <TableCell align="right">
-                <Button variant="contained" size="small" onClick={()=>{                 
+                <Button variant="contained" size="small" onClick={() => {
                   dispatch(loadProductToEdit({
                     img: product.img,
                     name: product.name,
@@ -68,8 +92,8 @@ const Products = () => {
                     _id: product._id,
                     key: product.key,
                     set: true
-                  })); 
-                  }}>
+                  }));
+                }}>
                   Edit
                 </Button>
                 <IconButton aria-label="delete" onClick={() => { handleDelete(product._id) }}>
