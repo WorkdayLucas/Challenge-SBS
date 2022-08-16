@@ -190,18 +190,7 @@ useEffect(()=>{
               setMenuVisivility(!menuVisivility)
             }}
           />
-          <Typography
-            variant="h6"
-            noWrap
-            component="div"
-            sx={{
-              flexGrow: 1,
-              display: { sm: 'block' },
-              color: "rgb(230, 230, 230)",
-            }}
-          >
-            Menu
-          </Typography>
+         
         </Box>
       </Box>
 
