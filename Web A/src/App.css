@@ -29,6 +29,11 @@
   color: #61dafb;
 }
 
+.homContainer {
+  padding-top: 10vh;
+  height: 90vh;
+}
+
 footer {
   position: relative;
   bottom: 0;

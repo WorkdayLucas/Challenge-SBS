@@ -5,13 +5,15 @@
     list-style: none;
     align-items: center;
     width: 85%;
+    height: 100%;
 }
 
 .productsContainer{
     display: flex;
     justify-content: center;
     align-items: flex-start;
-    height: 100vh;
+    height: 100%;
+ 
 
 }
 
