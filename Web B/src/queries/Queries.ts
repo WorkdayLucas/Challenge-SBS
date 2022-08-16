@@ -22,7 +22,7 @@ query GetProducts($name: String){
 `
 
 export const createProduct = gql`
-    mutation CreateProduct($name: String!, $description: String!, $price: Int!, $img: String!) {
+    mutation CreateProduct($name: String!, $description: String!, $price: Float!, $img: String!) {
         createProduct (input: {
             name: $name,
             description: $description
@@ -39,7 +39,7 @@ export const createProduct = gql`
 `
 
 export const updateProduct = gql`
-    mutation UpdateProduct($_id: ID!, $name: String!, $description: String!, $price: Int!, $img: String!) {
+    mutation UpdateProduct($_id: ID!, $name: String!, $description: String!, $price: Float!, $img: String!) {
         updateProduct (
             _id: $_id,
             input: {

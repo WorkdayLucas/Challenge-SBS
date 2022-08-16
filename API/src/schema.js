@@ -17,14 +17,14 @@ const typeDefs = [`
     key: Int!
     name: String!
     description: String!
-    price: Int!
+    price: Float!
     img: String! 
   }
 
   input ProductInput {
     name: String!
     description: String!
-    price: Int!
+    price: Float!
     img: String!
   }
 
