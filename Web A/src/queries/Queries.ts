@@ -9,15 +9,15 @@ export const graphQLClient = new GraphQLClient(endpoint, {
 })
 
 export const getProducts = gql`
-{
-  products {
-    _id
-    key
-    name
-    description
-    price
-    img
-  }
+query GetProducts($name: String){
+    products(input: {name : $name}) {
+      _id
+      key
+      name
+      description
+      price
+      img
+    }
 }
 `
 

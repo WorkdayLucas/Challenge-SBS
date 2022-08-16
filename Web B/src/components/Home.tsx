@@ -16,7 +16,7 @@ const Home = () => {
  
   const dispatch = useDispatch()
 
-  graphQLClient.request(getProducts).then((data:[Product]) => dispatch(loadProducts(data)))
+  graphQLClient.request(getProducts).then((data:[Product]) => dispatch(loadProducts(data))).catch((err)=>{console.log(err)})
 
 
   socket.on("update list", () => {

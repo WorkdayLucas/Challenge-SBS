@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import { styled, alpha } from '@mui/material/styles';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -15,6 +15,11 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 
 import { useProductModal } from './useProductModal';
 import ProductModal from './ProductModal';
+
+import { graphQLClient, getProducts } from '../queries/Queries'
+import { Product } from '../types/types';
+import { useDispatch } from 'react-redux';
+import { loadProducts } from '../features/slices/productSlice';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -62,12 +67,34 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 export default function NavBar() {
 
-  const [menuVisivility, setMenuVisivility] = React.useState(false)
+  const [menuVisivility, setMenuVisivility] = useState(false)
 
   const [isOpenModal, openModal, closeModal] = useProductModal(false)
 
+  const [search, setSearch] = useState("")
+
+  const dispatch = useDispatch()
+
+
+  const handleChange = (e: any) => {
+    setSearch(e.target.value.trimStart())
+  }
+
+  const handleSearch = () => {
+    graphQLClient.request(getProducts, {name: search})
+    .then((data:[Product]) =>{dispatch(loadProducts(data))})
+    .catch((err)=>{console.log(err)})
+  }
+
+  const handleEnter = (e: any) =>{
+    if(e.key==="Enter" && search.trim() !== ""){
+      handleSearch()
+    }
+  }
+
+
   return (
-    <Box sx={{ flexGrow: 1, position: "fixed", width: "100%", zIndex: 1000}}>
+    <Box sx={{ flexGrow: 1, position: "fixed", width: "100%", zIndex: 1000 }}>
       <AppBar position="static">
         <Toolbar>
           <IconButton
@@ -90,15 +117,20 @@ export default function NavBar() {
           >
             Products
           </Typography>
+
           <Search>
             <SearchIconWrapper>
               <SearchIcon />
             </SearchIconWrapper>
             <StyledInputBase
               placeholder="Search…"
+              value={search}
               inputProps={{ 'aria-label': 'search' }}
+              onChange={handleChange}
+              onKeyDown={handleEnter}
             />
           </Search>
+
           <AddCircleIcon sx={{
             color: green[500],
             cursor: "pointer",

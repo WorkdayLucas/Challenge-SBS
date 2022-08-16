@@ -52,6 +52,16 @@
 footer {
 position: relative;
 }
+/* #searchIcon{
+  position: relative;
+  left: -50px;
+  cursor: pointer;
+  background: red;
+} */
+
+#searchIcon:hover{
+  cursor: pointer;
+}
 
 @keyframes App-logo-spin {
   from {

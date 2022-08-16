@@ -3,7 +3,7 @@ import { resolvers } from './resolvers';
 
 const typeDefs = [`
   type Query {
-    products: [Product]
+    products(input: GetProductsInput): [Product]
   }
 
   type Mutation {
@@ -26,6 +26,10 @@ const typeDefs = [`
     description: String!
     price: Int!
     img: String!
+  }
+
+  input GetProductsInput {
+    name: String
   }
 
 `];

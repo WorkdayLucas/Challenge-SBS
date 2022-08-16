@@ -2,7 +2,14 @@ import Product from './models/product.js'
 
 export const resolvers = {
     Query: {
-        products: async()=> await Product.find()
+        products: async(_, {input})=>{
+
+            if(input.name){
+                return await Product.find({name: { $regex: input.name, $options: 'i' }})
+            }
+            
+            return await Product.find()
+        } 
     },
 
     Mutation: {
