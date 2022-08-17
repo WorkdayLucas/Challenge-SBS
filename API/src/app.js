@@ -43,12 +43,14 @@ io.on('connection', (socket) => {
     });
 
     socket.on("update product", () => {
+        console.log("llega el update")
         io.emit("update list");
     });
 
     socket.on("delete product", () => {
         io.emit("update list");
     });
+
 
     socket.on('disconnect', () => {
         io.emit('chat message', "user disconect");

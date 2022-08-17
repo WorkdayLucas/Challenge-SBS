@@ -8,3 +8,13 @@ export interface Product {
     price: Number,
     img: String,
 }
+
+export interface DataProducts {
+    products: [Product]
+}
+
+export interface ProductInput {
+    name: String
+    limit: Number
+    skip: Number
+} 

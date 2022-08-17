@@ -5,10 +5,10 @@ export const resolvers = {
         products: async(_, {input})=>{
 
             if(input.name){
-                return await Product.find({name: { $regex: input.name, $options: 'i' }})
+                return await Product.find({name: { $regex: input.name, $options: 'i' }}).skip(input.skip).limit(input.limit)
             }
             
-            return await Product.find()
+            return await Product.find().skip(input.skip).limit(input.limit)
         } 
     },
 

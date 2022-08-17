@@ -11,9 +11,9 @@ import SearchIcon from '@mui/icons-material/Search';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 import { graphQLClient, getProducts } from '../queries/Queries'
-import { Product } from '../types/types';
+import { DataProducts } from '../types/types';
 import { useDispatch } from 'react-redux';
-import { loadProducts } from '../features/slices/productSlice';
+import { loadProducts, activateResetPage, setProductsInput } from '../features/slices/productSlice';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -61,6 +61,8 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 export default function NavBar() {
 
+  
+
   const [menuVisivility, setMenuVisivility] = React.useState(false)
 
   const [search, setSearch] = useState("")
@@ -73,9 +75,8 @@ export default function NavBar() {
   }
 
   const handleSearch = () => {
-    graphQLClient.request(getProducts, {name: search})
-    .then((data:[Product]) =>{dispatch(loadProducts(data))})
-    .catch((err)=>{console.log(err)})
+    dispatch(setProductsInput({name:search, skip:0, limit:6}))
+    dispatch(activateResetPage(""))
   }
 
   const handleEnter = (e: any) =>{
