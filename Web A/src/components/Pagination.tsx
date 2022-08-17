@@ -40,8 +40,8 @@ export default function PaginationControlled() {
  
 
   return (
-    <Stack spacing={2}>
-      <Typography>Page: {page}</Typography>
+    <Stack spacing={2} sx={{marginTop: "1rem"}}>
+      {/* <Typography>Page: {page}</Typography> */}
       <Pagination count={count} page={page} onChange={handleChange} />
     </Stack>
   );
