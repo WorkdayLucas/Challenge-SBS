@@ -31,7 +31,7 @@ const typeDefs = [`
   input GetProductsInput {
     name: String
     skip: Int
-    limit: Int
+    limit: Int  
   }
 
 `];

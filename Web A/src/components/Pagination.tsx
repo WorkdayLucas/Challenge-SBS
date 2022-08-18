@@ -34,7 +34,8 @@ export default function PaginationControlled() {
   },[page])
 
   React.useEffect(()=>{
-    graphQLClient.request(getProducts, {name: producInput.name}).then((data:DataProducts) => {dispatch(setPagesCount(Math.ceil(data.products.length/6)))})
+    graphQLClient.request(getProducts, {name: producInput.name}).
+    then((data:DataProducts) => {dispatch(setPagesCount(Math.ceil(data.products.length/6)))})
     setPage(1)
     // console.log("se actualiza")
   },[resetPage])

@@ -13,13 +13,11 @@ const Home = () => {
   const producInput = useSelector(selectProductsInput)
 
   const dispatch = useDispatch()
-  // graphQLClient.request(getProducts, {limit: 6, skip: 0}).then((data:[Product]) => dispatch(loadProducts(data)))
 
   socket.on("update list", () => {
     dispatch(setProductsInput(producInput))
     graphQLClient.request(getProducts, { name: "", limit:0, skip:0 }).
     then((data: DataProducts) => { dispatch(setPagesCount(Math.ceil(data.products.length / 6))) })
-    // graphQLClient.request(getProducts, producInput).then((data:DataProducts) => dispatch(loadProducts(data)))
   })
 
   useEffect(()=>{

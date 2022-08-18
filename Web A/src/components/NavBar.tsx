@@ -88,9 +88,9 @@ export default function NavBar() {
     }
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     setSearch("")
-  },[clearSearch])
+  }, [clearSearch])
 
   return (
     <Box sx={{ flexGrow: 1, position: "fixed", width: "100%", zIndex: 1000, }}>
@@ -110,13 +110,8 @@ export default function NavBar() {
           </IconButton>
 
 
-          <Box sx={{display: "flex"}}>
-
-            <Box sx={{display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center"}}>
-              <KeyboardArrowDownIcon onClick={() => { setSearchMenuVisibility(!searchMenuVisibility) }} />
-              <SearchMenu visibility={searchMenuVisibility} />
-            </Box>
-
+          <Box sx={{ display: "flex" }}>
+            <SearchMenu />
             <Search>
               <SearchIconWrapper>
                 <SearchIcon />

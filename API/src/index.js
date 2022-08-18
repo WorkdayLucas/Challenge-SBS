@@ -1,6 +1,7 @@
 import server from './app.js'
 import {Connect} from './db.js'
 import dotenv from 'dotenv'
+// import './dataMock/dataMock'
 dotenv.config()
 
 Connect()
