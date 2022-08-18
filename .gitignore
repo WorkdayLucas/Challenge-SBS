@@ -149,3 +149,4 @@ dist
 package-lock.json
 
 api/requests/*
+API/src/dataMock
