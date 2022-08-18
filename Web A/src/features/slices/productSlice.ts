@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { Product, ProductInput } from "../../types/types";
+import { getProducts, graphQLClient } from "../../queries/Queries";
+import { DataProducts, Product, ProductInput } from "../../types/types";
 import { State } from '../redux/store';
 
 interface productsState {
@@ -7,6 +8,8 @@ interface productsState {
   currentProduct: Product
   GetProductsInput: ProductInput
   resetPage: boolean
+  pagesCount: number
+  clearSearch: boolean
 }
 
 const initialState: productsState = {
@@ -24,7 +27,9 @@ const initialState: productsState = {
     limit: 6,
     skip: 0,
   },
-  resetPage: false
+  resetPage: false,
+  pagesCount: 0,
+  clearSearch: false
 }
 
 const productSlice = createSlice({
@@ -51,16 +56,30 @@ const productSlice = createSlice({
         skip: action.payload.skip,
       }
     },
-    activateResetPage: (state, action)=>{
+    activateResetPage: (state)=>{
       state.resetPage = !state.resetPage
+    },
+    setPagesCount: (state, action)=>{
+      state.pagesCount = action.payload
+    },
+    clearSearchInput: (state)=>{
+      state.clearSearch = !state.clearSearch
     }
   },
 })
 
-export const { loadProducts, loadCurrentProduct, setProductsInput, activateResetPage} = productSlice.actions
+export const { 
+  loadProducts,
+   loadCurrentProduct,
+    setProductsInput,
+    activateResetPage, 
+    setPagesCount, 
+    clearSearchInput} = productSlice.actions
 export default productSlice.reducer
 
 export const selectProducts = (state: State) => state.productsData.products
 export const selectCurrentProduct = (state: State) => state.productsData.currentProduct
 export const selectProductsInput = (state: State) => state.productsData.GetProductsInput
 export const selectResetPage = (state: State) => state.productsData.resetPage
+export const selectPagesCount = (state: State) => state.productsData.pagesCount
+export const selectClearSearch = (state: State) => state.productsData.clearSearch

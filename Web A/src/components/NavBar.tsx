@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { styled, alpha } from '@mui/material/styles';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -9,11 +9,14 @@ import InputBase from '@mui/material/InputBase';
 import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+
 
 import { graphQLClient, getProducts } from '../queries/Queries'
 import { DataProducts } from '../types/types';
-import { useDispatch } from 'react-redux';
-import { loadProducts, activateResetPage, setProductsInput } from '../features/slices/productSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { loadProducts, activateResetPage, setProductsInput, selectClearSearch } from '../features/slices/productSlice';
+import SearchMenu from './SearchMenu';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -61,11 +64,11 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 export default function NavBar() {
 
-  
-
   const [menuVisivility, setMenuVisivility] = React.useState(false)
-
+  const [searchMenuVisibility, setSearchMenuVisibility] = useState(false)
   const [search, setSearch] = useState("")
+
+  const clearSearch = useSelector(selectClearSearch)
 
   const dispatch = useDispatch()
 
@@ -75,18 +78,22 @@ export default function NavBar() {
   }
 
   const handleSearch = () => {
-    dispatch(setProductsInput({name:search, skip:0, limit:6}))
-    dispatch(activateResetPage(""))
+    dispatch(setProductsInput({ name: search, skip: 0, limit: 6 }))
+    dispatch(activateResetPage())
   }
 
-  const handleEnter = (e: any) =>{
-    if(e.key==="Enter" && search.trim() !== ""){
+  const handleEnter = (e: any) => {
+    if (e.key === "Enter" && search.trim() !== "") {
       handleSearch()
     }
   }
 
+  useEffect(()=>{
+    setSearch("")
+  },[clearSearch])
+
   return (
-    <Box sx={{ flexGrow: 1, position: "fixed", width: "100%", zIndex: 1000 }}>
+    <Box sx={{ flexGrow: 1, position: "fixed", width: "100%", zIndex: 1000, }}>
       <AppBar position="static">
         <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
           <IconButton
@@ -101,19 +108,29 @@ export default function NavBar() {
           >
             <MenuIcon />
           </IconButton>
-        
-          <Search>
-            <SearchIconWrapper>
-              <SearchIcon />
-            </SearchIconWrapper>
-            <StyledInputBase
-              placeholder="Search…"
-              value={search}
-              inputProps={{ 'aria-label': 'search' }}
-              onChange={handleChange}
-              onKeyDown={handleEnter}
-            />
-          </Search>
+
+
+          <Box sx={{display: "flex"}}>
+
+            <Box sx={{display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center"}}>
+              <KeyboardArrowDownIcon onClick={() => { setSearchMenuVisibility(!searchMenuVisibility) }} />
+              <SearchMenu visibility={searchMenuVisibility} />
+            </Box>
+
+            <Search>
+              <SearchIconWrapper>
+                <SearchIcon />
+              </SearchIconWrapper>
+              <StyledInputBase
+                placeholder="Search…"
+                value={search}
+                inputProps={{ 'aria-label': 'search' }}
+                onChange={handleChange}
+                onKeyDown={handleEnter}
+              />
+            </Search>
+
+          </Box>
         </Toolbar>
       </AppBar>
       <Box
@@ -133,12 +150,12 @@ export default function NavBar() {
         }}
       >
         <Box sx={{
-              display: "flex",
-              marginTop: "1rem",  
-              alignItems: "center",  
-              height: "1.2rem",
-              width: "100%",
-            }}>
+          display: "flex",
+          marginTop: "1rem",
+          alignItems: "center",
+          height: "1.2rem",
+          width: "100%",
+        }}>
           <ArrowBackIcon
             sx={{
               position: "relative",
@@ -165,7 +182,7 @@ export default function NavBar() {
             }}
           >
             Menu
-          </Typography> 
+          </Typography>
         </Box>
       </Box>
 
