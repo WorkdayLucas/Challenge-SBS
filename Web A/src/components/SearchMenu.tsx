@@ -23,7 +23,7 @@ import SettingsSuggestIcon from '@mui/icons-material/SettingsSuggest';
 export default function SearchMenu() {
     const [open, setOpen] = React.useState(false);
     const [open1, setOpen1] = React.useState(false);
-    const [sortAlphabetic, setSortAlphabetic] = React.useState(false)
+    const [sortAlphabetic, setSortAlphabetic] = React.useState(true)
     const productInput = useSelector(selectProductsInput)
     const dispatch = useDispatch()
     const handleClick = () => {
@@ -80,6 +80,7 @@ export default function SearchMenu() {
                                 then((data: DataProducts) => { dispatch(setPagesCount(Math.ceil(data.products.length / 6))); dispatch(activateResetPage());})
                             dispatch(setProductsInput({ name: "", limit: 6, skip: 0, sortField: "", sortDirect: 0 }))
                             dispatch(clearSearchInput())
+                            setSortAlphabetic(true)
                         }} />
                 </ListItemButton>
 
