@@ -9,7 +9,6 @@ import InputBase from '@mui/material/InputBase';
 import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
 
 import { graphQLClient, getProducts } from '../queries/Queries'
@@ -78,7 +77,7 @@ export default function NavBar() {
   }
 
   const handleSearch = () => {
-    dispatch(setProductsInput({ name: search, skip: 0, limit: 6 }))
+    dispatch(setProductsInput({ name: search, skip: 0, limit: 6, sortField: "", sortDirect: 0 }))
     dispatch(activateResetPage())
   }
 

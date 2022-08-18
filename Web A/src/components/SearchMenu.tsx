@@ -11,8 +11,8 @@ import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import CategoryIcon from '@mui/icons-material/Category';
 import RefreshIcon from '@mui/icons-material/Refresh';
-import { useDispatch } from 'react-redux';
-import { activateResetPage, clearSearchInput, setPagesCount, setProductsInput } from '../features/slices/productSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { activateResetPage, clearSearchInput, loadProducts, selectProductsInput, setPagesCount, setProductsInput } from '../features/slices/productSlice';
 import { getProducts, graphQLClient } from '../queries/Queries';
 import { DataProducts } from '../types/types';
 import Button from '@mui/material/Button';
@@ -23,6 +23,8 @@ import SettingsSuggestIcon from '@mui/icons-material/SettingsSuggest';
 export default function SearchMenu() {
     const [open, setOpen] = React.useState(false);
     const [open1, setOpen1] = React.useState(false);
+    const [sortAlphabetic, setSortAlphabetic] = React.useState(false)
+    const productInput = useSelector(selectProductsInput)
     const dispatch = useDispatch()
     const handleClick = () => {
         setOpen(!open);
@@ -40,18 +42,22 @@ export default function SearchMenu() {
         setAnchorEl(null);
     };
 
+    React.useEffect(()=>{
+        
+    },[sortAlphabetic])
+
     return (
         <div>
             <Button
-            sx={{background:"rgb(59, 138, 217,.6)", height: "2.4rem"}}
+                sx={{ background: "rgb(59, 138, 217,.6)", height: "2.4rem" }}
                 id="basic-button"
                 aria-controls={open ? 'basic-menu' : undefined}
                 aria-haspopup="true"
                 aria-expanded={open ? 'true' : undefined}
                 onClick={handleClickmenu}
             >
-                <KeyboardArrowDownIcon sx={{ color: "white", position:"absolute", marginRight: "1.4rem",marginTop: ".2rem"}} />
-                <SettingsSuggestIcon sx={{ color: "white",position:"relative", left:".4rem"}} />
+                <KeyboardArrowDownIcon sx={{ color: "white", position: "absolute", marginRight: "1.4rem", marginTop: ".2rem" }} />
+                <SettingsSuggestIcon sx={{ color: "white", position: "relative", left: ".4rem" }} />
             </Button>
             <Menu
                 id="basic-menu"
@@ -71,8 +77,8 @@ export default function SearchMenu() {
                         sx={{ color: "black" }}
                         onClick={() => {
                             graphQLClient.request(getProducts, { name: "", limit: 0, skip: 0 }).
-                                then((data: DataProducts) => { dispatch(setPagesCount(Math.ceil(data.products.length / 6))); dispatch(activateResetPage()) })
-                            dispatch(setProductsInput({ name: "", limit: 6, skip: 0 }))
+                                then((data: DataProducts) => { dispatch(setPagesCount(Math.ceil(data.products.length / 6))); dispatch(activateResetPage());})
+                            dispatch(setProductsInput({ name: "", limit: 6, skip: 0, sortField: "", sortDirect: 0 }))
                             dispatch(clearSearchInput())
                         }} />
                 </ListItemButton>
@@ -81,16 +87,20 @@ export default function SearchMenu() {
                     <ListItemIcon>
                         <SortIcon />
                     </ListItemIcon>
-                    <ListItemText primary="Sort(coming soon)" sx={{ color: "black" }} />
+                    <ListItemText primary="Sort" sx={{ color: "black" }} />
                     {open1 ? <ExpandLess /> : <ExpandMore />}
                 </ListItemButton>
                 <Collapse in={open1} timeout="auto" unmountOnExit>
                     <List component="div" disablePadding>
-                        <ListItemButton sx={{ pl: 4 }}>
-                            <ListItemIcon>
+                        <ListItemButton sx={{ pl: 4 }} onClick={() => {
+                            setSortAlphabetic(!sortAlphabetic)
+                            dispatch(setProductsInput({ ...productInput,limit:0, skip:0, sortField: "name", sortDirect: sortAlphabetic? 1 : -1}))
+                            dispatch(activateResetPage())
+                        }}>
+                            <ListItemIcon >
                                 <SortByAlphaIcon />
                             </ListItemIcon>
-                            <ListItemText primary="Alphabetic(coming soon)" sx={{ color: "black" }} />
+                            <ListItemText primary={`Alphabetic ${productInput.sortDirect===0? "" : productInput.sortDirect===1? "A-Z" : "Z-A"}`} sx={{ color: "black" }} />
                         </ListItemButton>
                     </List>
                 </Collapse>

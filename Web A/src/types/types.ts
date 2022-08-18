@@ -17,4 +17,6 @@ export interface ProductInput {
     name: String
     limit: Number
     skip: Number
+    sortField?: String
+    sortDirect?: Number
 } 

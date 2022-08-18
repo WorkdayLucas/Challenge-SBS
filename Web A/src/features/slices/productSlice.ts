@@ -26,6 +26,8 @@ const initialState: productsState = {
     name: "",
     limit: 6,
     skip: 0,
+    sortField: "",
+    sortDirect: 0
   },
   resetPage: false,
   pagesCount: 0,
@@ -54,27 +56,29 @@ const productSlice = createSlice({
         name: action.payload.name,
         limit: action.payload.limit,
         skip: action.payload.skip,
+        sortField: action.payload.sortField || "",
+        sortDirect: action.payload.sortDirect || 0
       }
     },
-    activateResetPage: (state)=>{
+    activateResetPage: (state) => {
       state.resetPage = !state.resetPage
     },
-    setPagesCount: (state, action)=>{
+    setPagesCount: (state, action) => {
       state.pagesCount = action.payload
     },
-    clearSearchInput: (state)=>{
+    clearSearchInput: (state) => {
       state.clearSearch = !state.clearSearch
     }
   },
 })
 
-export const { 
+export const {
   loadProducts,
-   loadCurrentProduct,
-    setProductsInput,
-    activateResetPage, 
-    setPagesCount, 
-    clearSearchInput} = productSlice.actions
+  loadCurrentProduct,
+  setProductsInput,
+  activateResetPage,
+  setPagesCount,
+  clearSearchInput } = productSlice.actions
 export default productSlice.reducer
 
 export const selectProducts = (state: State) => state.productsData.products

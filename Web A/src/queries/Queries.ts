@@ -9,8 +9,8 @@ export const graphQLClient = new GraphQLClient(endpoint, {
 })
 
 export const getProducts = gql`
-query GetProducts($name: String, $limit: Int, $skip: Int){
-    products(input: {name : $name, limit: $limit, skip: $skip}) {
+query GetProducts($name: String, $limit: Int, $skip: Int $sortField: String, $sortDirect: Int){
+    products(input: {name : $name, limit: $limit, skip: $skip, sortField: $sortField, sortDirect: $sortDirect}) {
       _id
       key
       name
