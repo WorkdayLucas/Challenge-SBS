@@ -82,29 +82,29 @@ export default function NavBar() {
   }
 
   const handleSearch = () => {
-    graphQLClient.request(getProducts, {name: search})
-    .then((data:[Product]) =>{dispatch(loadProducts(data))})
-    .catch((err)=>{console.log(err)})
+    graphQLClient.request(getProducts, { name: search })
+      .then((data: [Product]) => { dispatch(loadProducts(data)) })
+      .catch((err) => { console.log(err) })
   }
 
-  const handleEnter = (e: any) =>{
-    if(e.key==="Enter" && search.trim() !== ""){
+  const handleEnter = (e: any) => {
+    if (e.key === "Enter" && search.trim() !== "") {
       handleSearch()
     }
   }
 
-useEffect(()=>{
-  if(isEditing){
-    openModal()
-  }
-},[isEditing])
+  useEffect(() => {
+    if (isEditing) {
+      openModal()
+    }
+  }, [isEditing])
 
 
   return (
     <Box sx={{ flexGrow: 1, position: "fixed", width: "100%", zIndex: 1000 }}>
       <AppBar position="static">
         <Toolbar>
-          
+
           <IconButton
             size="large"
             edge="start"
@@ -173,7 +173,6 @@ useEffect(()=>{
           alignItems: "center",
           height: "1.2rem",
           width: "100%",
-          position: "fixed"
         }}>
           <ArrowBackIcon
             sx={{
@@ -190,7 +189,20 @@ useEffect(()=>{
               setMenuVisivility(!menuVisivility)
             }}
           />
-         
+
+          <Typography
+            variant="h6"
+            noWrap
+            component="div"
+            sx={{
+              flexGrow: 1,
+              display: { sm: 'block' },
+              color: "rgb(230, 230, 230)",
+            }}
+          >
+            Menu
+          </Typography>
+
         </Box>
       </Box>
 
