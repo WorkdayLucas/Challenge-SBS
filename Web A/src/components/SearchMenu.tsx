@@ -19,11 +19,16 @@ import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import SettingsSuggestIcon from '@mui/icons-material/SettingsSuggest';
+import PriceChangeIcon from '@mui/icons-material/PriceChange';
 
 export default function SearchMenu() {
     const [open, setOpen] = React.useState(false);
     const [open1, setOpen1] = React.useState(false);
     const [sortAlphabetic, setSortAlphabetic] = React.useState(true)
+    const [sortPrice, setSortPrice] = React.useState(true)
+    const [filter, setFilter] = React.useState("")
+
+
     const productInput = useSelector(selectProductsInput)
     const dispatch = useDispatch()
     const handleClick = () => {
@@ -42,9 +47,9 @@ export default function SearchMenu() {
         setAnchorEl(null);
     };
 
-    React.useEffect(()=>{
-        
-    },[sortAlphabetic])
+    React.useEffect(() => {
+
+    }, [sortAlphabetic])
 
     return (
         <div>
@@ -77,10 +82,12 @@ export default function SearchMenu() {
                         sx={{ color: "black" }}
                         onClick={() => {
                             graphQLClient.request(getProducts, { name: "", limit: 0, skip: 0 }).
-                                then((data: DataProducts) => { dispatch(setPagesCount(Math.ceil(data.products.length / 6))); dispatch(activateResetPage());})
+                                then((data: DataProducts) => { dispatch(setPagesCount(Math.ceil(data.products.length / 6))); dispatch(activateResetPage()); })
                             dispatch(setProductsInput({ name: "", limit: 6, skip: 0, sortField: "", sortDirect: 0 }))
                             dispatch(clearSearchInput())
                             setSortAlphabetic(true)
+                            setSortPrice(true)
+                            setFilter("")
                         }} />
                 </ListItemButton>
 
@@ -95,13 +102,26 @@ export default function SearchMenu() {
                     <List component="div" disablePadding>
                         <ListItemButton sx={{ pl: 4 }} onClick={() => {
                             setSortAlphabetic(!sortAlphabetic)
-                            dispatch(setProductsInput({ ...productInput,limit:0, skip:0, sortField: "name", sortDirect: sortAlphabetic? 1 : -1}))
+                            setFilter("alpha")
+                            dispatch(setProductsInput({ ...productInput, limit: 6, skip: 0, sortField: "name", sortDirect: sortAlphabetic ? 1 : -1 }))
                             dispatch(activateResetPage())
                         }}>
                             <ListItemIcon >
                                 <SortByAlphaIcon />
                             </ListItemIcon>
-                            <ListItemText primary={`Alphabetic ${productInput.sortDirect===0? "" : productInput.sortDirect===1? "A-Z" : "Z-A"}`} sx={{ color: "black" }} />
+                            <ListItemText primary={`Alphabetic ${filter !== "alpha" ? "" : productInput.sortDirect === 1 ? "A-Z" : "Z-A"}`} sx={{ color: "black" }} />
+                        </ListItemButton>
+
+                        <ListItemButton sx={{ pl: 4 }} onClick={() => {
+                            setSortPrice(!sortPrice)
+                            setFilter("price")
+                            dispatch(setProductsInput({ ...productInput, limit: 6, skip: 0, sortField: "price", sortDirect: sortPrice ? 1 : -1 }))
+                            dispatch(activateResetPage())
+                        }}>
+                            <ListItemIcon >
+                                <PriceChangeIcon />
+                            </ListItemIcon>
+                            <ListItemText primary={`Price ${filter !== "price" ? "" : productInput.sortDirect === 1 ? "Min-Max" : "Max-Min"}`} sx={{ color: "black" }} />
                         </ListItemButton>
                     </List>
                 </Collapse>
